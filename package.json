@@ -8,7 +8,8 @@
         "test": "mocha --require babel-polyfill js/test/*",
         "ipfs-publish": "node js/publish.js",
         "merkle-roots": "node js/lib/getMerkleRoots.js",
-        "migrateChannel": "node js/lib/migrateChannel.js"
+        "migrateChannel": "node js/lib/migrateChannel.js",
+        "poolInfoAndUsers": "node js/avax/getPoolInfoAndUsers.js"
     },
     "husky": {
         "hooks": {
@@ -23,6 +24,8 @@
         "ethereumjs-util": "^7.0.7",
         "husky": "^4.2.5",
         "isomorphic-fetch": "^2.2.1",
+        "moment": "^2.29.1",
+        "mysql2": "^2.3.3",
         "prettier": "^2.0.5",
         "pretty-quick": "^2.0.1",
         "regenerator-runtime": "^0.13.7",
