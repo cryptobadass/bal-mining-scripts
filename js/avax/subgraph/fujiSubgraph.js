@@ -1,18 +1,13 @@
 const fetch = require('isomorphic-fetch');
-const SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/leedewyze/balancer-fuji-v2';
+const { ENDPOINT, SUBGRAPH_URL } = require('../utils/constants');
 const Web3 = require('web3');
-const web3 = new Web3(
-    new Web3.providers.WebsocketProvider(
-        'wss://api.avax-test.network/ext/bc/C/ws'
-    )
-);
+const web3 = new Web3(new Web3.providers.WebsocketProvider(ENDPOINT.FUJI));
 
 async function fetchAllPools() {
     let poolResults = [];
     let skip = 0;
     let paginatePools = true;
-    // while loop to fetch all pools
+    // to fetch all pools
     while (paginatePools) {
         let query = `
       {
@@ -32,7 +27,7 @@ async function fetchAllPools() {
         }
       `;
 
-        let response = await fetch(SUBGRAPH_URL, {
+        let response = await fetch(SUBGRAPH_URL.FUJI, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -81,7 +76,7 @@ async function fetchAllPools() {
                     }
                 `;
 
-                let response = await fetch(SUBGRAPH_URL, {
+                let response = await fetch(SUBGRAPH_URL.FUJI, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',

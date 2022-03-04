@@ -19,10 +19,10 @@ PoolInfo.create = (newPoolInfo, callback) => {
             return;
         }
 
-        console.log('created pool_info: ', {
-            id: res.insertId,
-            ...newPoolInfo,
-        });
+        // console.log('created pool_info: ', {
+        //     id: res.insertId,
+        //     ...newPoolInfo,
+        // });
         // create success
         callback(null, { id: res.insertId, ...newPoolInfo });
     });
@@ -49,6 +49,26 @@ PoolInfo.findByPoolId = (pool_id, callback) => {
             callback({ kind: 'not_found' });
         }
     );
+};
+
+PoolInfo.getAllPoolAddresses = (callback) => {
+    sql.query(`SELECT DISTINCT pool_address FROM pool_info`, (err, res) => {
+        if (err) {
+            console.log('error: ', err);
+            callback(err, null);
+            return;
+        }
+
+        if (res.length) {
+            // console.log('found PoolAddresses: ', res);
+            callback(null, res);
+            return;
+        }
+
+        // not found PoolAddresses
+        console.log('not found, res.lenght=%s', res.length);
+        callback({ kind: 'not_found' }, null);
+    });
 };
 
 module.exports = PoolInfo;

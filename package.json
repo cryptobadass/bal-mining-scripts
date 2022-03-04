@@ -9,7 +9,7 @@
         "ipfs-publish": "node js/publish.js",
         "merkle-roots": "node js/lib/getMerkleRoots.js",
         "migrateChannel": "node js/lib/migrateChannel.js",
-        "poolInfoAndUsers": "node js/avax/getPoolInfoAndUsers.js"
+        "initPoolInfoAndUsers": "node js/avax/dataService.js"
     },
     "husky": {
         "hooks": {

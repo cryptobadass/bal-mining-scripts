@@ -16,10 +16,10 @@ PoolUser.create = (newPoolUser, callback) => {
             return;
         }
 
-        console.log('created pool_user: ', {
-            id: res.insertId,
-            ...newPoolUser,
-        });
+        // console.log('created pool_user: ', {
+        //     id: res.insertId,
+        //     ...newPoolUser,
+        // });
         // create success
         callback(null, { id: res.insertId, ...newPoolUser });
     });
@@ -27,7 +27,7 @@ PoolUser.create = (newPoolUser, callback) => {
 
 PoolUser.findByPoolAddress = (pool_address, callback) => {
     sql.query(
-        `SELECT * FROM pool_user WHERE pool_address = ${pool_address}`,
+        `SELECT * FROM pool_user WHERE pool_address = '${pool_address}'`,
         (err, res) => {
             if (err) {
                 console.log('error: ', err);
@@ -36,14 +36,14 @@ PoolUser.findByPoolAddress = (pool_address, callback) => {
             }
 
             if (res.length) {
-                console.log('found PoolUser: ', res[0]);
-                callback(null, res[0]);
+                // console.log('found PoolUser: ', res);
+                callback(null, res);
                 return;
             }
 
             // not found PoolUser with the id
             console.log('not found, res.lenght=%s', res.length);
-            callback({ kind: 'not_found' });
+            callback({ kind: 'not_found' }, null);
         }
     );
 };
