@@ -22,7 +22,8 @@ async function createBalanceSnapshot(
                 return;
             }
             console.log(
-                'create BalanceSnapshot success user_address:%s',
+                'create BalanceSnapshot success, pool_address=%s, user_address:%s',
+                poolAddress,
                 userAddress
             );
             // console.log('create BalanceSnapshot success data:%s', JSON.stringify(data));

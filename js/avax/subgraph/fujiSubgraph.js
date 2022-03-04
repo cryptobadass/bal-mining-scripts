@@ -17,7 +17,7 @@ async function fetchAllPools() {
             poolType
             factory
             createTime
-            shares {
+            shares (first: 1000) {
               balance
               userAddress {
                 id

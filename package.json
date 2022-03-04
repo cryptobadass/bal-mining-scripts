@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@fleekhq/fleek-storage-js": "^1.0.2",
-        "bignumber.js": "^9.0.0",
+        "bignumber.js": "^9.0.2",
         "cli-progress": "^3.8.2",
         "dotenv": "^8.2.0",
         "ethereumjs-util": "^7.0.7",
