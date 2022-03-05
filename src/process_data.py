@@ -7,7 +7,9 @@ from urllib.request import urlopen
 import json
 from src.realtime_utils import get_current_lm_week_number, get_percent_week_passed
 
-V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/balancer-labs/frontend-v2/master/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json'
+# V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/balancer-labs/frontend-v2/master/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json'
+# redirect local url
+V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
 
 
 def compute_LM_power_timeseries(_df):
@@ -127,6 +129,9 @@ def get_lps_share_integral_for_pools(_df, _realtime=None, _exclusions={}):
 def get_lm_allocations(_chain_id, _week_number=0, _realtime=None):
     LOGGER.debug('get_lm_allocations')
     week_passed = 1
+
+    print('get_lm_allocations -> _chain_id:', _chain_id,
+          '_week_number: ', _week_number, '_realtime: ', _realtime)
     if _realtime:
         _week_number = get_current_lm_week_number()
         week_passed = get_percent_week_passed()
@@ -136,6 +141,7 @@ def get_lm_allocations(_chain_id, _week_number=0, _realtime=None):
         week_allocation = json.loads(jsonurl.read())[f'week_{_week_number}']
     except KeyError:
         week_allocation = {}
+
     for chain_allocation in week_allocation:
         if chain_allocation['chainId'] == _chain_id:
             df = pd.DataFrame()

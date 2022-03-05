@@ -119,5 +119,12 @@
         "jsonSnapshotFilename": "_current.json",
         "fleekNamespace": "balancer-claims-kovan",
         "offset": 0
+    },
+    "fuji": {
+        "reportsDirectory": "../reports-fuji/",
+        "reportFilename": "_totals.json",
+        "jsonSnapshotFilename": "_roots.json",
+        "fleekNamespace": "balancer-claims-fuji",
+        "offset": 0
     }
 }

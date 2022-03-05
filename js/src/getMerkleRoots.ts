@@ -7,16 +7,21 @@ const { config } = require('./config');
 
 const globCwd = path.resolve(__dirname, '../' + config.reportsDirectory);
 
+console.log('Merkle roots -> globCwd:', globCwd);
+
 const filenamesOfTotals = glob.sync('./**/' + config.reportFilename, {
     cwd: globCwd,
 });
+
+console.log('Merkle roots -> filenamesOfTotals:', filenamesOfTotals);
+
 
 const reports = filenamesOfTotals.map((fileName) => [
     parseInt(fileName.split('/')[1]), // weekNumber
     JSON.parse(fs.readFileSync(path.resolve(globCwd, fileName)).toString()),
 ]);
 
-console.log('Merkle roots');
+console.log('Merkle roots -> reports:', reports);
 
 const roots = {};
 

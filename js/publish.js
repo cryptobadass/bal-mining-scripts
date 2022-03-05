@@ -60,7 +60,7 @@ function weeklyTotals(config) {
     Object.entries(files).forEach(([week, file]) => {
         if (!snapshot[week]) {
             console.log(`Publish week ${week}`);
-            const key = `${config.fleekNamespace}/reports/${week}`;
+            const key = `${config.fleekNamespace}/reports-fuji/${week}`;
 
             promises.push(fleekService.uploadJson(key, file));
             // For testing without uploading to ipfs

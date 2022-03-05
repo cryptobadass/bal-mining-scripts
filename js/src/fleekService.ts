@@ -15,6 +15,8 @@ const fleekConfig: FleekConfig = {
     bucket: process.env.FLEEK_BUCKET || 'balancer-team-bucket',
 };
 
+console.log('fleekConfig:', fleekConfig)
+
 async function getSnapshot(snapshotKey) {
     const input = fleekConfig;
     input.key = snapshotKey;
@@ -25,8 +27,12 @@ async function getSnapshot(snapshotKey) {
 
 async function uploadJson(key, body) {
     const input = fleekConfig;
+
+    console.log( 'uploadJson->input:', input, 'key:', key, 'body:', body)
+    
     input.key = key;
     input.data = JSON.stringify(body);
+    console.log('uploadJson->input:', input)
     const result = await fleek.upload(input);
     return {
         key,
