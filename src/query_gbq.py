@@ -88,7 +88,7 @@ def query_mysql(_network, _week_number, _pool_list, _excluded_lps_list=[]):
     bqstorageclient = bigquery_storage.BigQueryReadClient()
     cursor.execute(sql)
 
-    result = cursor.fetchall()  # 获取查询的所有记录
+    result = cursor.fetchall()
 
     print('query_mysql->result:', result)
 

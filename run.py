@@ -66,7 +66,7 @@ for chain_id in NETWORKS.keys():
     LOGGER.info('Fetching incentives allocation')
     allocations_df, week_passed = get_lm_allocations(
         chain_id, _week_number=week_number, _realtime=realtime_estimator)
-    # get a list of incentivized pools(获取pool 列表)
+    # get a list of incentivized pools
     print('run.py -> allocations_df:', allocations_df)
 
     incentivized_pools = allocations_df.index.drop_duplicates().values
@@ -78,7 +78,7 @@ for chain_id in NETWORKS.keys():
     print('run.py -> raw_data_df:', raw_data_df)
     # os._exit(2)
     # get pools with liquidity providers that have opted-out of LM incentives
-    exclusions = get_exclusions(chain_id)  # 不参与奖励的黑名单
+    exclusions = get_exclusions(chain_id)  # fillte the blacklist
     print('run.py -> exclusions:', exclusions)
     # process raw data to obtain the share of LM incentives for each LP in each pool
     share_df = get_lps_share_integral_for_pools(
