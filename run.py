@@ -156,7 +156,7 @@ for chain_id in NETWORKS.keys():
 if realtime_estimator:
     update_gbq_api_dataset(full_export, week_number)
 else:
-    reports_dir = f'reports-fuji/{week_number}'
+    reports_dir = f'reports/{week_number}'
     print('\nReports totals:')
     checks = {}
     report_files = os.listdir(reports_dir)

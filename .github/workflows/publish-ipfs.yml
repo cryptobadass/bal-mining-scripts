@@ -79,7 +79,16 @@ jobs:
    
             - name: Publish ipfs reports for avax on fuji
               run: NETWORK=fuji yarn ipfs-publish
+            
+            - name: Publish ipfs reports for avax on fuji-uni
+              run: NETWORK=fuji-uni yarn ipfs-publish
+            
+            - name: Publish ipfs reports for avax on fuji-bmock
+              run: NETWORK=fuji-bmock yarn ipfs-publish
 
+            - name: Publish ipfs reports for avax on fuji-usd
+              run: NETWORK=fuji-usd yarn ipfs-publish  
+                                        
             - name: Commit changes
               uses: EndBug/add-and-commit@v7
               with:
