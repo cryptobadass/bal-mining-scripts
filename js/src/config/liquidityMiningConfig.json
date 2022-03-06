@@ -122,29 +122,29 @@
     },
     "fuji": {
         "reportsDirectory": "../reports/",
-        "reportFilename": "_totals.json",
-        "jsonSnapshotFilename": "_current_fuji.json",
+        "reportFilename": "fuji_totals.json",
+        "jsonSnapshotFilename": "_current-fuji.json",
         "fleekNamespace": "balancer-claims-fuji",
         "offset": 0
     },
     "fuji-uni": {
         "reportsDirectory": "../reports/",
         "reportFilename": "__fuji_0x286ea60cb66ba7647c8143c5d467594b92a3734c.json",
-        "jsonSnapshotFilename": "_current_uni.json",
+        "jsonSnapshotFilename": "_current-fuji-uni.json",
         "fleekNamespace": "balancer-claims-fuji-uni",
         "offset": 0
     },
     "fuji-bmock": {
         "reportsDirectory": "../reports/",
         "reportFilename": "__fuji_0xd421434752e64468488b0e252f90cc08759e542d.json",
-        "jsonSnapshotFilename": "_current_bmock.json",
+        "jsonSnapshotFilename": "_current-fuji-bmock.json",
         "fleekNamespace": "balancer-claims-fuji-bmock",
         "offset": 0
     },
     "fuji-usd": {
         "reportsDirectory": "../reports/",
         "reportFilename": "__fuji_0xfad1257bd61131b6bb60bee08289167099014ac6.json",
-        "jsonSnapshotFilename": "_current_usd.json",
+        "jsonSnapshotFilename": "_current-fuji-usd.json",
         "fleekNamespace": "balancer-claims-fuji-usd",
         "offset": 0
     }
