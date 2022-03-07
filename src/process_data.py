@@ -9,7 +9,8 @@ from src.realtime_utils import get_current_lm_week_number, get_percent_week_pass
 
 # V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/balancer-labs/frontend-v2/master/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json'
 # redirect local url
-V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
+# V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
+V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/MultiTokenLiquidityMining.json'
 
 
 def compute_LM_power_timeseries(_df):
@@ -63,7 +64,6 @@ def compute_timestamp_intervals(_blocks, _realtime=None):
     intervals.name = 'state_duration'
     intervals.index.name = 'block_timestamp'
     return intervals
-
 
 def compute_total_LM_power_timeseries(_df):
     LOGGER.debug('compute_total_LM_power_timeseries')

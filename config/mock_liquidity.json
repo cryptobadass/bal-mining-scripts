@@ -1,0 +1,17 @@
+{
+    "success": true,
+    "result": {
+        "current_timestamp": "2022-03-06T12:06:35.320Z",
+        "liquidity-providers": [
+            {
+                "snapshot_timestamp": "2022-02-20T23:50:29.000Z",
+                "address": "0xfF85a5Ff1e5f2D6Cc736B2F1c2fAcd54386E284A",
+                "token_address": "0x286ea60cb66ba7647c8143c5d467594b92a3734c",
+                "chain_id": 43113,
+                "current_estimate": "965.14824771",
+                "velocity": "0",
+                "week": 91
+            }
+        ]
+    }
+}

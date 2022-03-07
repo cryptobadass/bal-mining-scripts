@@ -141,11 +141,11 @@
         "fleekNamespace": "balancer-claims-fuji-bmock",
         "offset": 0
     },
-    "fuji-usd": {
+    "fuji-usdc": {
         "reportsDirectory": "../reports/",
         "reportFilename": "__fuji_0xfad1257bd61131b6bb60bee08289167099014ac6.json",
-        "jsonSnapshotFilename": "_current-fuji-usd.json",
-        "fleekNamespace": "balancer-claims-fuji-usd",
+        "jsonSnapshotFilename": "_current-fuji-usdc.json",
+        "fleekNamespace": "balancer-claims-fuji-usdc",
         "offset": 0
     }
 }

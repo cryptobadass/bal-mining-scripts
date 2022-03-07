@@ -70,18 +70,18 @@ jobs:
 
             # - name: Calculate roots for PICKLE on arbitrum
             #   run: NETWORK=arbitrum-pickle yarn merkle-roots --outfile ./reports/_roots-pickle-arbitrum.json
-            
+
             - name: Calculate roots for Avax
               run: NETWORK=fuji yarn merkle-roots --outfile ./reports/_roots-fuji.json
-            
+
             - name: Calculate roots for Uni
               run: NETWORK=fuji-uni yarn merkle-roots --outfile ./reports/_roots-fuji-uni.json
-            
+
             - name: Calculate roots for bmock
               run: NETWORK=fuji-bmock yarn merkle-roots --outfile ./reports/_roots-fuji-bmock.json
-            
+
             - name: Calculate roots for usd
-              run: NETWORK=usd yarn merkle-roots --outfile ./reports/_roots-fuji-usd.json
+              run: NETWORK=fuji-usdc yarn merkle-roots --outfile ./reports/_roots-fuji-usdc.json
 
             - name: Commit changes
               uses: EndBug/add-and-commit@v7
