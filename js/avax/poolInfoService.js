@@ -1,4 +1,5 @@
 const PoolInfo = require('./models/poolInfo.model');
+const { CHAIN_ID } = require('./utils/constants');
 
 async function createPoolInfo(
     poolId,
@@ -9,7 +10,7 @@ async function createPoolInfo(
 ) {
     PoolInfo.create(
         new PoolInfo({
-            chain_id: 4,
+            chain_id: CHAIN_ID.FUJI,
             pool_id: poolId,
             pool_address: poolAddress,
             pool_type: poolType,
@@ -32,7 +33,14 @@ async function getAllPoolAddresses(callback) {
     });
 }
 
+async function isPoolExist(poolId, callback) {
+    PoolInfo.findByPoolId(poolId, (error, data) => {
+        callback(error, data);
+    });
+}
+
 module.exports = {
     createPoolInfo,
     getAllPoolAddresses,
+    isPoolExist,
 };

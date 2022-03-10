@@ -26,6 +26,7 @@
         "isomorphic-fetch": "^2.2.1",
         "moment": "^2.29.1",
         "mysql2": "^2.3.3",
+        "node-cron": "^3.0.0",
         "prettier": "^2.0.5",
         "pretty-quick": "^2.0.1",
         "regenerator-runtime": "^0.13.7",

@@ -26,51 +26,6 @@ jobs:
             # - name: Calculate roots for BAL
             #   run: NETWORK=homestead yarn merkle-roots --outfile ./reports/_roots.json
 
-            # - name: Calculate roots for BAL on arbitrum
-            #   run: NETWORK=arbitrum yarn merkle-roots --outfile ./reports/_roots-arbitrum.json
-
-            # - name: Calculate roots for BAL on polygon
-            #   run: NETWORK=polygon yarn merkle-roots --outfile ./reports/_roots-polygon.json
-
-            # - name: Calculate roots for LDO
-            #   run: NETWORK=homestead-lido yarn merkle-roots --outfile ./reports/_roots-lido.json
-
-            # - name: Calculate roots for UNN
-            #   run: NETWORK=homestead-union yarn merkle-roots --outfile ./reports/_roots-union.json
-
-            # - name: Calculate roots for BANK
-            #   run: NETWORK=homestead-bankless yarn merkle-roots --outfile ./reports/_roots-bankless.json
-
-            # - name: Calculate roots for NOTE
-            #   run: NETWORK=homestead-note yarn merkle-roots --outfile ./reports/_roots-note.json
-
-            # - name: Calculate roots for VITA
-            #   run: NETWORK=homestead-vita yarn merkle-roots --outfile ./reports/_roots-vita.json
-
-            # - name: Calculate roots for NEXO
-            #   run: NETWORK=homestead-nexo yarn merkle-roots --outfile ./reports/_roots-nexo.json
-
-            # - name: Calculate roots for D2D
-            #   run: NETWORK=homestead-d2d yarn merkle-roots --outfile ./reports/_roots-d2d.json
-
-            # - name: Calculate roots for TUSD on polygon
-            #   run: NETWORK=polygon-tusd yarn merkle-roots --outfile ./reports/_roots-tusd-polygon.json
-
-            # - name: Calculate roots for TEL on polygon
-            #   run: NETWORK=polygon-telcoin yarn merkle-roots --outfile ./reports/_roots-telcoin-polygon.json
-
-            # - name: Calculate roots for QI on polygon
-            #   run: NETWORK=polygon-qi yarn merkle-roots --outfile ./reports/_roots-qi-polygon.json
-
-            # - name: Calculate roots for WMATIC on polygon
-            #   run: NETWORK=polygon-wmatic yarn merkle-roots --outfile ./reports/_roots-wmatic-polygon.json
-
-            # - name: Calculate roots for MCB on arbitrum
-            #   run: NETWORK=arbitrum-mcdex yarn merkle-roots --outfile ./reports/_roots-mcdex-arbitrum.json
-
-            # - name: Calculate roots for PICKLE on arbitrum
-            #   run: NETWORK=arbitrum-pickle yarn merkle-roots --outfile ./reports/_roots-pickle-arbitrum.json
-
             - name: Calculate roots for Avax
               run: NETWORK=fuji yarn merkle-roots --outfile ./reports/_roots-fuji.json
 
@@ -79,9 +34,6 @@ jobs:
 
             - name: Calculate roots for bmock
               run: NETWORK=fuji-bmock yarn merkle-roots --outfile ./reports/_roots-fuji-bmock.json
-
-            - name: Calculate roots for usd
-              run: NETWORK=fuji-usdc yarn merkle-roots --outfile ./reports/_roots-fuji-usdc.json
 
             - name: Commit changes
               uses: EndBug/add-and-commit@v7

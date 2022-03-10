@@ -18,12 +18,19 @@ async function createPoolUser(poolAddress, address, timestamp) {
 }
 
 async function getUsersByPoolAddress(poolAddress, callback) {
-    PoolUser.findByPoolAddress(poolAddress, (error, users) => {
+    PoolUser.findUsersByPoolAddress(poolAddress, (error, users) => {
         callback(error, users);
+    });
+}
+
+async function isUserInPool(poolAddress, address, callback) {
+    PoolUser.findCertainUser(poolAddress, address, (error, user) => {
+        callback(error, user);
     });
 }
 
 module.exports = {
     createPoolUser,
     getUsersByPoolAddress,
+    isUserInPool,
 };

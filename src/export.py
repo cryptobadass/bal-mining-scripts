@@ -82,7 +82,8 @@ def insertUserRewardData(chain_id, pool_address, token_address, user_address, cu
     conn.close()
 
 
-V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
+# V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
+V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/avalanche-config/main/frontend-v2/liquidityMining/MultiTokenLiquidityMining.json'
 
 
 def getPoolAddressByTokenAddress(tokenAddress, _chain_id,  _week_number):

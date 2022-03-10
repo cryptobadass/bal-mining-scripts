@@ -50,7 +50,7 @@ async function fetchAllPools() {
         }
     }
     // got all pool
-    console.log('got all pool, poolCount=%s', poolResults.length);
+    // console.log('got all pool, poolCount=%s', poolResults.length);
 
     let finalResults = [];
 
@@ -116,7 +116,6 @@ async function fetchAllPools() {
     return finalResults;
 }
 
-// fetchAllPools()
 module.exports = {
     fetchAllPools,
 };

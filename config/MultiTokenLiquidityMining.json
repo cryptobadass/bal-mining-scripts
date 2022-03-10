@@ -1,27 +1,21 @@
 {
-  "week_1": [
-    {
-      "chainId": 43113,
-      "pools": {
-        "0x0eb68e04ebeea06fd60d31d418a9ce7eb2bae70b00020000000000000000000f": [
-          {
-            "tokenAddress": "0x286ea60cb66ba7647c8143c5d467594b92a3734c",
-            "amount": 1000
-          }
-        ],
-        "0x1259dd14b0bf2593f8f871b87cc69673699ee1d9000200000000000000000001": [
-          {
-            "tokenAddress": "0xfad1257bd61131b6bb60bee08289167099014ac6",
-            "amount": 10000
-          }
-        ],
-        "0x128ade8607f687d4dec108e90faabb097d067b84000100000000000000000004": [
-          {
-            "tokenAddress": "0xd421434752e64468488b0e252f90cc08759e542d",
-            "amount": 1000
-          }
-        ]
-      }
-    }
-  ]
+    "week_1": [
+        {
+            "chainId": 43113,
+            "pools": {
+                "0x0eb68e04ebeea06fd60d31d418a9ce7eb2bae70b00020000000000000000000f": [
+                    {
+                        "tokenAddress": "0x286ea60cb66ba7647c8143c5d467594b92a3734c",
+                        "amount": 1000
+                    }
+                ],
+                "0x128ade8607f687d4dec108e90faabb097d067b84000100000000000000000004": [
+                    {
+                        "tokenAddress": "0xd421434752e64468488b0e252f90cc08759e542d",
+                        "amount": 1000
+                    }
+                ]
+            }
+        }
+    ]
 }
