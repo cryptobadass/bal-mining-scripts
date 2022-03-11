@@ -19,10 +19,6 @@ PoolInfo.create = (newPoolInfo, callback) => {
             return;
         }
 
-        // console.log('created pool_info: ', {
-        //     id: res.insertId,
-        //     ...newPoolInfo,
-        // });
         // create success
         callback(null, { id: res.insertId, ...newPoolInfo });
     });
@@ -45,7 +41,7 @@ PoolInfo.findByPoolId = (pool_id, callback) => {
             }
 
             // not found PoolInfo with the id
-            console.log('not found, res.lenght=%s', res.length);
+            // console.log('not found, res.lenght=%s', res.length);
             callback({ kind: 'not_found' }, null);
         }
     );

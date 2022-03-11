@@ -12,7 +12,7 @@ async function createPoolUser(poolAddress, address, timestamp) {
                 console.log('create PoolUser fail poolAddress:%s', poolAddress);
                 return;
             }
-            console.log('create PoolUser success poolAddress:%s', poolAddress);
+            // console.log('create PoolUser success poolAddress:%s', poolAddress);
         }
     );
 }

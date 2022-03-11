@@ -8,18 +8,20 @@ const {
     getUsersByPoolAddress,
     isUserInPool,
 } = require('./poolUserService');
-const { createBalanceSnapshot } = require('./balanceSnapshotService');
+const {
+    createBalanceSnapshot,
+    findIdsByTime,
+} = require('./balanceSnapshotService');
 const moment = require('moment');
 const fujiSubgraph = require('./subgraph/fujiSubgraph');
 const date = require('./utils/date');
 const { ZERO_ADDRESS } = require('./utils/constants');
 const erc20Utils = require('./utils/erc20Utils');
-const BigNumber = require('bignumber.js');
 
 /**
  * init data of pool_info, pool_user and balancer_snapshot
  */
-async function initBasicData(withBalanceSnapshot) {
+async function initBasicData() {
     // 1. get all pools
     let allPools = await fujiSubgraph.fetchAllPools();
     for (let pool of allPools) {
@@ -27,7 +29,7 @@ async function initBasicData(withBalanceSnapshot) {
         const poolAddress = pool.address;
         const poolType = pool.poolType;
         const factory = pool.factory;
-        const timestamp = date.stampToTime(pool.createTime);
+        const timestamp = date.stampToTime(pool.createTime, 2);
         // 2. create pool info
         await isPoolExist(poolId, (error, data) => {
             // console.log('isPoolExist error=%s, data=%s', error, JSON.stringify(data));
@@ -66,14 +68,12 @@ async function initBasicData(withBalanceSnapshot) {
                 });
 
                 // 4. fetch balance snapshot of user in each pool
-                if (withBalanceSnapshot) {
-                    let users = [
-                        {
-                            address: address,
-                        },
-                    ];
-                    await getUserBalanceAndTotalSupply(poolAddress, users);
-                }
+                let user = [
+                    {
+                        address: address,
+                    },
+                ];
+                await getUserBalanceAndTotalSupply(poolAddress, user);
             }
         }
     }
@@ -109,56 +109,10 @@ async function getUsersEachPool(allPoolAddresses) {
                 );
                 return;
             }
-            console.log(
-                'get users of %s success, users: %s',
-                pool.pool_address,
-                JSON.stringify(users)
-            );
-
             getUserBalanceAndTotalSupply(pool.pool_address, users);
         });
     }
 }
-
-// async function getBalanceAndTotalSupplyOfUser(poolAddress, userAddress) {
-//     let userBalance = await erc20Utils.getBalance(poolAddress, userAddress);
-//     let decimals = await erc20Utils.getDecimals(poolAddress);
-//     let totalSupply = await erc20Utils.getTotalSupply(poolAddress);
-
-//     // todo BigNumber examples
-//     let userBalanceEther = new BigNumber(String(userBalance));
-//     userBalanceEther = userBalanceEther.shiftedBy(-Number(decimals));
-//     // console.log(
-//     //     '********** userBalance=%s, userBalanceEther=%s',
-//     //     userBalance,
-//     //     userBalanceEther
-//     // );
-//     let totalSupplyEther = new BigNumber(String(totalSupply));
-//     totalSupplyEther = totalSupplyEther.shiftedBy(-Number(decimals));
-//     // console.log(
-//     //     '********** totalSupply=%s, totalSupplyEther=%s',
-//     //     totalSupply,
-//     //     totalSupplyEther
-//     // );
-//     let rate = userBalanceEther / totalSupplyEther;
-//     // console.log(
-//     //     '********** poolAddress=%s, userBalanceEther=%s, totalSupplyEther=%s, rate=%s',
-//     //     poolAddress,
-//     //     userBalanceEther,
-//     //     totalSupplyEther,
-//     //     rate
-//     // );
-
-//     // console.log(`poolAddress=${poolAddress}, userAddress=${userAddress}, userBalance=${userBalance}, decimals=${decimals}, totalSupply=${totalSupply}`);
-//     // create balance snapshot
-//     await createBalanceSnapshot(
-//         poolAddress,
-//         userAddress,
-//         userBalance,
-//         totalSupply,
-//         decimals
-//     );
-// }
 
 async function getUserBalanceAndTotalSupply(poolAddress, users) {
     for (let user of users) {
@@ -166,30 +120,6 @@ async function getUserBalanceAndTotalSupply(poolAddress, users) {
         let userBalance = await erc20Utils.getBalance(poolAddress, userAddress);
         let decimals = await erc20Utils.getDecimals(poolAddress);
         let totalSupply = await erc20Utils.getTotalSupply(poolAddress);
-
-        // todo BigNumber examples
-        let userBalanceEther = new BigNumber(String(userBalance));
-        userBalanceEther = userBalanceEther.shiftedBy(-Number(decimals));
-        console.log(
-            '********** userBalance=%s, userBalanceEther=%s',
-            userBalance,
-            userBalanceEther
-        );
-        let totalSupplyEther = new BigNumber(String(totalSupply));
-        totalSupplyEther = totalSupplyEther.shiftedBy(-Number(decimals));
-        console.log(
-            '********** totalSupply=%s, totalSupplyEther=%s',
-            totalSupply,
-            totalSupplyEther
-        );
-        let rate = userBalanceEther / totalSupplyEther;
-        console.log(
-            '********** poolAddress=%s, userBalanceEther=%s, totalSupplyEther=%s, rate=%s',
-            poolAddress,
-            userBalanceEther,
-            totalSupplyEther,
-            rate
-        );
 
         // console.log(`poolAddress=${poolAddress}, userAddress=${userAddress}, userBalance=${userBalance}, decimals=${decimals}, totalSupply=${totalSupply}`);
         // create balance snapshot
@@ -203,10 +133,14 @@ async function getUserBalanceAndTotalSupply(poolAddress, users) {
     }
 }
 
-// initBasicData();
-// balanceSnapshotSchedule();
+async function findBalanceSnapshotByTime(startTime, endTime, callback) {
+    await findIdsByTime(startTime, endTime, (error, data) => {
+        callback(error, data);
+    });
+}
 
 module.exports = {
     initBasicData,
     runBalanceSnapshot,
+    findBalanceSnapshotByTime,
 };
