@@ -1,16 +1,12 @@
 from __future__ import unicode_literals
-from src.logger import LOGGER
+from utils.logger import LOGGER
 import time
 import pandas as pd
 import datetime
 from urllib.request import urlopen
 import json
-from src.realtime_utils import get_current_lm_week_number, get_percent_week_passed
-
-# V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/balancer-labs/frontend-v2/master/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json'
-# redirect local url
-# V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
-V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/avalanche-config/main/frontend-v2/liquidityMining/MultiTokenLiquidityMining.json'
+from utils.realtime_utils import get_current_lm_week_number, get_percent_week_passed
+from config.const.constants import V2_LM_ALLOCATION_URL
 
 
 def compute_LM_power_timeseries(_df):

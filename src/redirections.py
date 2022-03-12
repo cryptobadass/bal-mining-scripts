@@ -1,17 +1,17 @@
 from urllib.request import urlopen
 import json
 import pandas as pd
-from src.logger import LOGGER
+from utils.logger import LOGGER
 from web3 import Web3
 
 
 def get_redirects(_realtime=None):
     if _realtime:
-        url = 'https://raw.githubusercontent.com/balancer-labs/bal-mining-scripts/master/config/redirect.json'
+        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/json/redirect.json'
         jsonurl = urlopen(url)
         redirects = json.loads(jsonurl.read())
     else:
-        redirects = json.load(open('config/redirect.json'))
+        redirects = json.load(open('config/json/redirect.json'))
     return redirects
 
 

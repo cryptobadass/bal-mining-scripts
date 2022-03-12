@@ -1,5 +1,5 @@
-from src.constants import PROJECT_ID
-from src.logger import LOGGER
+from config.const.constants import PROJECT_ID
+from utils.logger import LOGGER
 from google.cloud import bigquery
 
 

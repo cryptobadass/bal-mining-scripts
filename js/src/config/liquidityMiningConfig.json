@@ -140,5 +140,16 @@
         "jsonSnapshotFilename": "_current-fuji-bmock.json",
         "fleekNamespace": "balancer-claims-fuji-bmock",
         "offset": 0
+<<<<<<< HEAD
+    },
+    "fuji-usdc": {
+        "reportsDirectory": "../reports/",
+        "reportFilename": "__fuji_0xfad1257bd61131b6bb60bee08289167099014ac6.json",
+        "jsonSnapshotFilename": "_current-fuji-usdc.json",
+        "fleekNamespace": "balancer-claims-fuji-usdc",
+        "offset": 0,
+        "decimals": 6
+=======
+>>>>>>> b781afe82a96cdcee8e60dc1ba0d4e25eb057be6
     }
 }

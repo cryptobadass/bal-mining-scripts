@@ -1,10 +1,10 @@
 from datetime import datetime
 
-WEEK_1_START_TIMESTAMP = 1590969600
+from config.const.constants import WEEK_1_START_TIMESTAMP
 
 
 def get_current_lm_week_number():
-    week_1_start = '01/06/2020 00:00:00 UTC'
+    week_1_start = '28/02/2022 00:00:00 UTC'
     week_1_start = datetime.strptime(week_1_start, '%d/%m/%Y %H:%M:%S %Z')
     # this is what week we're actually in
     week_number = int(1 + (datetime.utcnow() - week_1_start).days/7)
