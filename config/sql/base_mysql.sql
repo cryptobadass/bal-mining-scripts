@@ -3,3 +3,5 @@ FROM pool_info p
 LEFT JOIN balance_snapshot u ON p.pool_address = u.pool_address
 WHERE p.pool_address IN ('{pool_addresses}')
 AND u.user_address NOT IN ('{excluded_lps}')
+AND UNIX_TIMESTAMP(u.timestamp) >= {begin_time}
+AND UNIX_TIMESTAMP(u.timestamp) <= {end_time}

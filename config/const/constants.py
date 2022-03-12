@@ -14,31 +14,6 @@ CLAIM_PRECISIONS = {
     '0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32': 2
 }
 
-# Table Config
-TABLES_CONFIGS = {
-    1: {
-        'blocks': 'bigquery-public-data.crypto_ethereum.blocks',
-        'lm_transfers': 'blockchain-etl.ethereum_balancer.view_LM_transfers',
-        'lm_state': 'blockchain-etl.ethereum_balancer.view_LM_state',
-    },
-    137: {
-        'blocks': 'public-data-finance.crypto_polygon.blocks',
-        'lm_transfers': 'blockchain-etl.polygon_balancer.view_LM_transfers',
-        'lm_state': 'blockchain-etl.polygon_balancer.view_LM_state',
-    },
-    42161: {
-        'blocks': 'nansen-datasets-prod.crypto_arbitrum.blocks',
-        'lm_transfers': 'blockchain-etl.arbitrum_balancer.view_LM_transfers',
-        'lm_state': 'blockchain-etl.arbitrum_balancer.view_LM_state',
-    },
-    43113: {
-        'blocks': 'bigquery-public-data.crypto_ethereum.blocks',
-        'lm_transfers': 'blockchain-etl.ethereum_balancer.view_LM_transfers',
-        'lm_state': 'blockchain-etl.ethereum_balancer.view_LM_state',
-    },
-}
-
-
 # LP EXCLUSION
 BASE_LP_EXCLUSION_LIST = [
     '0x0000000000000000000000000000000000000000',
