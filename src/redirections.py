@@ -7,7 +7,7 @@ from web3 import Web3
 
 def get_redirects(_realtime=None):
     if _realtime:
-        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/redirect.json'
+        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/json/redirect.json'
         jsonurl = urlopen(url)
         redirects = json.loads(jsonurl.read())
     else:

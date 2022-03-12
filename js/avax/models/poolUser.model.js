@@ -25,9 +25,32 @@ PoolUser.create = (newPoolUser, callback) => {
     });
 };
 
-PoolUser.findByPoolAddress = (pool_address, callback) => {
+PoolUser.findUsersByPoolAddress = (pool_address, callback) => {
     sql.query(
         `SELECT * FROM pool_user WHERE pool_address = '${pool_address}'`,
+        (err, res) => {
+            if (err) {
+                console.log('error: ', err);
+                callback(err, null);
+                return;
+            }
+
+            if (res.length) {
+                // console.log('found PoolUser: ', res);
+                callback(null, res);
+                return;
+            }
+
+            // not found PoolUser with the id
+            console.log('not found, res.lenght=%s', res.length);
+            callback({ kind: 'not_found' }, null);
+        }
+    );
+};
+
+PoolUser.findCertainUser = (pool_address, address, callback) => {
+    sql.query(
+        `SELECT * FROM pool_user WHERE pool_address = '${pool_address}' and address = '${address}'`,
         (err, res) => {
             if (err) {
                 console.log('error: ', err);

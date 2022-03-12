@@ -7,7 +7,7 @@ from web3 import Web3
 
 def get_exclusions(_chain_id, _realtime=None):
     if _realtime:
-        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/exclude.json'
+        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/json/exclude.json'
         jsonurl = urlopen(url)
         exclusions = json.loads(jsonurl.read())
     else:

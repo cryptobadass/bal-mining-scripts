@@ -12,9 +12,14 @@ const ENDPOINT = {
     FUJI: 'wss://api.avax-test.network/ext/bc/C/ws',
 };
 
+const CHAIN_ID = {
+    FUJI: 43113,
+};
+
 module.exports = {
     POOL_TYPE,
     SUBGRAPH_URL,
     ENDPOINT,
     ZERO_ADDRESS,
+    CHAIN_ID,
 };

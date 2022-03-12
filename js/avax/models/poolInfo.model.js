@@ -19,10 +19,6 @@ PoolInfo.create = (newPoolInfo, callback) => {
             return;
         }
 
-        // console.log('created pool_info: ', {
-        //     id: res.insertId,
-        //     ...newPoolInfo,
-        // });
         // create success
         callback(null, { id: res.insertId, ...newPoolInfo });
     });
@@ -30,7 +26,7 @@ PoolInfo.create = (newPoolInfo, callback) => {
 
 PoolInfo.findByPoolId = (pool_id, callback) => {
     sql.query(
-        `SELECT * FROM pool_info WHERE pool_id = ${pool_id}`,
+        `SELECT * FROM pool_info WHERE pool_id = '${pool_id}'`,
         (err, res) => {
             if (err) {
                 console.log('error: ', err);
@@ -39,14 +35,14 @@ PoolInfo.findByPoolId = (pool_id, callback) => {
             }
 
             if (res.length) {
-                console.log('found PoolInfo: ', res[0]);
+                // console.log('found PoolInfo: ', res[0]);
                 callback(null, res[0]);
                 return;
             }
 
             // not found PoolInfo with the id
-            console.log('not found, res.lenght=%s', res.length);
-            callback({ kind: 'not_found' });
+            // console.log('not found, res.lenght=%s', res.length);
+            callback({ kind: 'not_found' }, null);
         }
     );
 };
