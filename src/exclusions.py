@@ -1,17 +1,17 @@
 from urllib.request import urlopen
 import json
 import pandas as pd
-from src.logger import LOGGER
+from utils.logger import LOGGER
 from web3 import Web3
 
 
 def get_exclusions(_chain_id, _realtime=None):
     if _realtime:
-        url = 'https://raw.githubusercontent.com/balancer-labs/bal-mining-scripts/master/config/exclude.json'
+        url = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/exclude.json'
         jsonurl = urlopen(url)
         exclusions = json.loads(jsonurl.read())
     else:
-        exclusions = json.load(open('config/exclude.json'))
+        exclusions = json.load(open('config/json/exclude.json'))
     return exclusions.get(str(_chain_id), {})
 
 

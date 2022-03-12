@@ -1,100 +1,109 @@
 from lib2to3.pgen2 import token
 import os
 import json
-from src.logger import LOGGER
-from src.constants import *
+from utils.logger import LOGGER
+from utils.mysql import get_mysql_connect
+from config.const.constants import *
 from web3 import Web3
 from urllib.request import urlopen
-
+from utils.claim import *
 import pymysql
 
 
-def save_report(_week_number, _chain_id, _token, _data):
-    LOGGER.debug(f'saving {_token} report...')
-    network = NETWORKS[_chain_id]
-    reports_dir = f'reports/{_week_number}'
-    if not os.path.exists(reports_dir):
-        os.mkdir(reports_dir)
-    filename = f'{reports_dir}/__{network}_{_token}.json'
-    export_data = _data[_data > get_claim_threshold(_token)]
-    export = export_data.apply(lambda x: format(
-        x, f'.{get_claim_precision(_token)}f'))
-    export_json = export.to_json()
-    parsed_export = json.loads(export_json)
-    with open(filename, "w") as write_file:
-        json.dump(parsed_export, write_file, indent=4)
-    LOGGER.debug(f'saved to {filename}')
-    if _chain_id == 1 and _token == '0xba100000625a3754423978a60c9317c58a424e3d':
-        filename = f'{reports_dir}/_totals.json'
+class CreateReports:  # create reports
+
+    __week_number = 0
+    __chain_id = 0
+    __token = ''
+    __data = []
+
+    # init data
+    def __init__(self, _week_number, _chain_id, _token, _data):
+        print(self.__class__)
+        self.__week_number = _week_number
+        self.__chain_id = _chain_id
+        self.__token = _token
+        self.__data = _data
+        print('[CreateReports] _week_number:', self.__week_number,
+              '_chain_id:', self.__chain_id, '_token:', self.__token, '_data:', self.__data)
+
+    def save_fuji_report(self):
+        LOGGER.debug(f'saving {self.__token} report...')
+        network = NETWORKS[self.__chain_id]
+        reports_dir = f'reports/{self.__week_number}'
+
+        if not os.path.exists(reports_dir):
+            os.makedirs(reports_dir)
+
+        filename = f'{reports_dir}/__{network}_{self.__token}.json'
+        export_data = self.__data[self.__data >
+                                  get_claim_threshold(self.__token)]
+        export = export_data.apply(lambda x: format(
+            x, f'.{get_claim_precision(self.__token)}f'))
+        export_json = export.to_json()
+
+        parsed_export = json.loads(export_json)
+        print('save_fuji_report -> parsed_export: ', parsed_export)
+
+        # insert user reward data
+        items = parsed_export.items()
+        for address, amount in items:
+            print('save_fuji_report-> ', str(address) + '=' + str(amount))
+            poolAddress = self.getPoolAddressByTokenAddress()
+            self.insertUserRewardData(poolAddress, address, str(amount), '0')
+
+        # Write reward data into JSON file
         with open(filename, "w") as write_file:
             json.dump(parsed_export, write_file, indent=4)
         LOGGER.debug(f'saved to {filename}')
 
+        # If it is the main chain, write fuji_totals JSON file
+        if self.__chain_id == 43113 and self.__token == '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc':
+            filename = f'{reports_dir}/fuji_totals.json'
+            with open(filename, "w") as write_file:
+                json.dump(parsed_export, write_file, indent=4)
+            # print success log
+            LOGGER.debug(f'saved to {filename} success!')
 
-def save_fuji_report(_week_number, _chain_id, _token, _data):
-    LOGGER.debug(f'saving {_token} report...')
-    network = NETWORKS[_chain_id]
-    reports_dir = f'reports/{_week_number}'
-    if not os.path.exists(reports_dir):
-        os.makedirs(reports_dir)
-    filename = f'{reports_dir}/__{network}_{_token}.json'
-
-    print('[save_fuji_report] _week_number:', _week_number,
-          '_chain_id:', _chain_id, '_token:', _token, '_data:', _data)
-
-    export_data = _data[_data > get_claim_threshold(_token)]
-    export = export_data.apply(lambda x: format(
-        x, f'.{get_claim_precision(_token)}f'))
-    export_json = export.to_json()
-    parsed_export = json.loads(export_json)
-    print('save_fuji_report -> parsed_export: ', parsed_export)
-    # insert user reward data
-    items = parsed_export.items()
-    for address, amount in items:
-        print(str(address) + '=' + str(amount))
-        poolAddress = getPoolAddressByTokenAddress(
-            _token, _chain_id, _week_number)
-        insertUserRewardData(_chain_id, poolAddress, _token,
-                             address, str(amount), '0', _week_number)
-    with open(filename, "w") as write_file:
-        json.dump(parsed_export, write_file, indent=4)
-    LOGGER.debug(f'saved to {filename}')
-    if _chain_id == 43113 and _token == '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc':
-        print('save_fuji_report -> filename: ', filename)
-        filename = f'{reports_dir}/fuji_totals.json'
-        with open(filename, "w") as write_file:
-            json.dump(parsed_export, write_file, indent=4)
-        LOGGER.debug(f'saved to {filename}')
-
-
-def insertUserRewardData(chain_id, pool_address, token_address, user_address, current_estimate, velocity, week):
-    print('[insertUserRewardData] chain_id:', chain_id, 'pool_address:', pool_address, 'token_address:',
-          token_address, 'user_address:', user_address, 'current_estimate:', current_estimate, 'week:', week)
     # insert reward user data
-    conn = pymysql.connect(host='localhost', user='root', password='123456',
-                           database='balancer_db', charset='utf8')
-    cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
-    sql = "INSERT INTO every_week_need_reward_user_snapshot(chain_id,pool_address,token_address,user_address,current_estimate,velocity,week) VALUES(%s,%s,%s,%s,%s,%s,%s)"
-    cursor.execute(sql, (chain_id, pool_address, token_address,
-                         user_address, current_estimate, velocity, week))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    def insertUserRewardData(self, pool_address, user_address, current_estimate, velocity):
 
+        print('[insertUserRewardData]',
+              'pool_address:', pool_address,
+              'user_address:', user_address,
+              'current_estimate:', current_estimate,
+              'velocity:', velocity)
 
-V2_LM_ALLOCATION_URL = 'http://localhost:8080/config/MultiTokenLiquidityMining.json'
+        conn = get_mysql_connect()
+        cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
 
+        sql = "INSERT INTO every_week_need_reward_user_snapshot(chain_id,pool_address,token_address,user_address,current_estimate,velocity,week) VALUES(%s,%s,%s,%s,%s,%s,%s)"
 
-def getPoolAddressByTokenAddress(tokenAddress, _chain_id,  _week_number):
-    jsonurl = urlopen(V2_LM_ALLOCATION_URL)
-    try:
-        week_allocation = json.loads(jsonurl.read())[f'week_{_week_number}']
-    except KeyError:
-        week_allocation = {}
+        cursor.execute(sql, (
+            self.__chain_id,
+            pool_address,
+            self.__token,
+            user_address,
+            current_estimate,
+            velocity,
+            self.__week_number)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
 
-    for chain_allocation in week_allocation:
-        if chain_allocation['chainId'] == _chain_id:
-            for pool, rewards in chain_allocation['pools'].items():
-                for r in rewards:
-                    if r['tokenAddress'] == tokenAddress:
-                        return pool[:42].lower()
+    def getPoolAddressByTokenAddress(self):
+
+        jsonurl = urlopen(V2_LM_ALLOCATION_URL)
+
+        try:
+            week_allocation = json.loads(jsonurl.read())[
+                f'week_{self.__week_number}']
+        except KeyError:
+            week_allocation = {}
+        for chain_allocation in week_allocation:
+            if chain_allocation['chainId'] == self.__chain_id:
+                for pool, rewards in chain_allocation['pools'].items():
+                    for r in rewards:
+                        if r['tokenAddress'] == self.__token:
+                            return pool[:42].lower()
