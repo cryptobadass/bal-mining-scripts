@@ -77,18 +77,25 @@ class CreateReports:  # create reports
         conn = get_mysql_connect()
         cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
 
-        sql = "INSERT INTO every_week_need_reward_user_snapshot(chain_id,pool_address,token_address,user_address,current_estimate,velocity,week) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+        querySQL = "SELECT * FROM every_week_need_reward_user_snapshot WHERE chain_id=%d AND pool_address='%s' AND token_address='%s' AND user_address='%s' AND week=%d" % (
+            self.__chain_id, pool_address, self.__token, user_address, self.__week_number)
 
-        cursor.execute(sql, (
-            self.__chain_id,
-            pool_address,
-            self.__token,
-            user_address,
-            current_estimate,
-            velocity,
-            self.__week_number)
-        )
-        conn.commit()
+        cursor.execute(querySQL)
+        result = cursor.fetchall()
+
+        if len(result) == 0:
+            sql = "INSERT INTO every_week_need_reward_user_snapshot(chain_id,pool_address,token_address,user_address,current_estimate,velocity,week) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (
+                self.__chain_id,
+                pool_address,
+                self.__token,
+                user_address,
+                current_estimate,
+                velocity,
+                self.__week_number)
+            )
+            conn.commit()
+
         cursor.close()
         conn.close()
 

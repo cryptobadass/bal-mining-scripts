@@ -24,10 +24,10 @@ BASE_LP_EXCLUSION_LIST = [
 SQL_FILE_PATH = 'config/sql/base_mysql.sql'
 
 # V2_LM_ALLOCATION_URL
-V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/bal-mining-scripts/master/config/json/MultiTokenLiquidityMining.json'
+V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/frontend-v2/develop/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json'
 
-# Set Frist Week Beign Timestamp  2022-02-28
-WEEK_1_START_TIMESTAMP = 1646006400
+# Set Frist Week Beign Timestamp  2022-03-07
+WEEK_1_START_TIMESTAMP = 1646611200
 
 
 # Google Cloud Project ID

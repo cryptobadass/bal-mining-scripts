@@ -4,7 +4,7 @@ from config.const.constants import WEEK_1_START_TIMESTAMP
 
 
 def get_current_lm_week_number():
-    week_1_start = '28/02/2022 00:00:00 UTC'
+    week_1_start = '07/03/2022 00:00:00 UTC'
     week_1_start = datetime.strptime(week_1_start, '%d/%m/%Y %H:%M:%S %Z')
     # this is what week we're actually in
     week_number = int(1 + (datetime.utcnow() - week_1_start).days/7)
@@ -28,3 +28,19 @@ def get_percent_week_passed():
     week_start_timestamp = get_current_lm_week_start_timestamp()
     week_passed = (week_end_timestamp - week_start_timestamp)/(7*24*3600)
     return week_passed
+
+
+def get_appiont_lm_week_start_timestamp(week_number):
+    if week_number <= 0:
+        week_number = get_current_lm_week_start_timestamp()
+    week_start_timestamp = WEEK_1_START_TIMESTAMP + \
+        (week_number - 1) * 7 * 24 * 60 * 60
+    return week_start_timestamp
+
+
+def get_appiont_lm_week_end_timestamp(week_number):
+    week_start_timestamp = get_appiont_lm_week_start_timestamp(week_number)
+    week_end_timestamp = int(week_start_timestamp + 7 * 24 * 60 * 60)
+    print('week_start_timestamp:', week_start_timestamp,
+          'week_end_timestamp:', week_end_timestamp)
+    return week_end_timestamp
