@@ -17,65 +17,80 @@ const fujiSubgraph = require('./subgraph/fujiSubgraph');
 const date = require('./utils/date');
 const { ZERO_ADDRESS } = require('./utils/constants');
 const erc20Utils = require('./utils/erc20Utils');
+const emailUtils = require('./email/emailUtils');
+const { EMAIL_MSG } = require('./email/email.msg');
 
 /**
  * init data of pool_info, pool_user and balancer_snapshot
  */
 async function initBasicData() {
-    // 1. get all pools
-    let allPools = await fujiSubgraph.fetchAllPools();
-    for (let pool of allPools) {
-        const poolId = pool.id;
-        const poolAddress = pool.address;
-        const poolType = pool.poolType;
-        const factory = pool.factory;
-        const timestamp = date.stampToTime(pool.createTime, 2);
-        // 2. create pool info
-        await isPoolExist(poolId, (error, data) => {
-            // console.log('isPoolExist error=%s, data=%s', error, JSON.stringify(data));
-            if (error) {
-                // pool not exist
-                console.log(`poolId=${poolId} not exist`);
-                createPoolInfo(
-                    poolId,
-                    poolAddress,
-                    poolType,
-                    factory,
-                    timestamp
-                );
-            }
-        });
+    try {
+        // 1. get all pools
+        let allPools = await fujiSubgraph.fetchAllPools();
+        for (let pool of allPools) {
+            const poolId = pool.id;
+            const poolAddress = pool.address;
+            const poolType = pool.poolType;
+            const factory = pool.factory;
+            const timestamp = date.stampToTime(pool.createTime, 2);
 
-        // 3. create pool user
-        let shareHolders = pool.shareHolders;
-        if (shareHolders.length > 0) {
-            for (let address of shareHolders) {
-                if (address === ZERO_ADDRESS) {
-                    continue;
+            poolId = '999';
+            // 2. create pool info
+            await isPoolExist(poolId, (error, data) => {
+                // console.log('isPoolExist error=%s, data=%s', error, JSON.stringify(data));
+                if (error) {
+                    // pool not exist
+                    console.log(`poolId=${poolId} not exist`);
+                    createPoolInfo(
+                        poolId,
+                        poolAddress,
+                        poolType,
+                        factory,
+                        timestamp
+                    );
                 }
-                await isUserInPool(poolAddress, address, (error, data) => {
-                    if (error) {
-                        // user not exist
-                        console.log(
-                            `user=${address} not exist in poolId=${poolAddress}`
-                        );
-                        createPoolUser(
-                            poolAddress,
-                            address,
-                            moment().format('YYYY-MM-DD HH:mm:ss')
-                        );
-                    }
-                });
+            });
 
-                // 4. fetch balance snapshot of user in each pool
-                let user = [
-                    {
-                        address: address,
-                    },
-                ];
-                await getUserBalanceAndTotalSupply(poolAddress, user);
+            // 3. create pool user
+            let shareHolders = pool.shareHolders;
+            if (shareHolders.length > 0) {
+                for (let address of shareHolders) {
+                    if (address === ZERO_ADDRESS) {
+                        continue;
+                    }
+                    await isUserInPool(poolAddress, address, (error, data) => {
+                        if (error) {
+                            // user not exist
+                            console.log(
+                                `user=${address} not exist in poolId=${poolAddress}`
+                            );
+                            createPoolUser(
+                                poolAddress,
+                                address,
+                                moment().format('YYYY-MM-DD HH:mm:ss')
+                            );
+                        }
+                    });
+
+                    // 4. fetch balance snapshot of user in each pool
+                    let user = [
+                        {
+                            address: address,
+                        },
+                    ];
+                    await getUserBalanceAndTotalSupply(poolAddress, user);
+                }
             }
         }
+    } catch (error) {
+        emailUtils.sendEmail(
+            EMAIL_MSG.INIT_BASIC_DATA_ERROR.SUBJECT,
+            EMAIL_MSG.INIT_BASIC_DATA_ERROR.CONTENT +
+                '<p>error: ' +
+                error.message +
+                '</p>'
+        );
+        console.log('run initBasicData error:', error);
     }
 }
 

@@ -1,6 +1,8 @@
 var cron = require('node-cron');
 const dataService = require('./dataService');
 const date = require('./utils/date');
+const emailUtils = require('./email/emailUtils');
+const { EMAIL_MSG } = require('./email/email.msg');
 
 // https://github.com/node-cron/node-cron
 /**
@@ -22,18 +24,17 @@ const date = require('./utils/date');
 const EVERY_3_MINUTES = '*/3 * * * * *';
 // specified time
 // every day 23:59:59 => 59 59 23 * * *
-const BASIC_DATA_TIME = '0 40 22 * * *';
+const BASIC_DATA_TIME = '59 59 23 * * *';
 cron.schedule(BASIC_DATA_TIME, () => {
     console.log(
         'running schedule to init basic data ',
         new Date(new Date().toUTCString())
     );
-    try {
-        dataService.initBasicData();
-    } catch (error) {
-        // send alarm email
-        console.log('run init data schedule error:', error);
-    }
+    emailUtils.sendEmail(
+        EMAIL_MSG.START_INIT_BASIC_DATA.SUBJECT,
+        EMAIL_MSG.START_INIT_BASIC_DATA.CONTENT
+    );
+    dataService.initBasicData();
 });
 
 // 2. check data
@@ -58,9 +59,17 @@ cron.schedule(CHECK_DATA_TIME, () => {
         (error, data) => {
             if (error) {
                 // not found, send alarm email
-                console.log('findBalanceSnapshotByTime not found');
+                console.log('findBalanceSnapshotByTime, not found');
+                emailUtils.sendEmail(
+                    EMAIL_MSG.CHECK_DATA_NOT_FOUND.SUBJECT,
+                    EMAIL_MSG.CHECK_DATA_NOT_FOUND.CONTENT
+                );
                 return;
             }
+            emailUtils.sendEmail(
+                EMAIL_MSG.CHECK_DATA_FOUND.SUBJECT,
+                data + EMAIL_MSG.CHECK_DATA_FOUND.CONTENT
+            );
             console.log('findBalanceSnapshotByTime data length=%s', data);
         }
     );
