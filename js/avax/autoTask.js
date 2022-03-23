@@ -24,7 +24,7 @@ const { EMAIL_MSG } = require('./email/email.msg');
 const EVERY_3_MINUTES = '*/3 * * * * *';
 // specified time
 // every day 23:59:59 => 59 59 23 * * *
-const BASIC_DATA_TIME = '59 59 23 * * *';
+const BASIC_DATA_TIME = '0 0 8,16,23 * * *';
 cron.schedule(BASIC_DATA_TIME, () => {
     console.log(
         'running schedule to init basic data ',
