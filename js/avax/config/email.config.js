@@ -14,6 +14,6 @@ module.exports = {
                 pass: process.env.EMAIL_PASS,
             },
         },
-        to: ['aiguoli0612@gmail.com'],
+        to: [process.env.EMAIL_RECEIVER],
     },
 };
