@@ -34,7 +34,6 @@ async function initBasicData() {
             const factory = pool.factory;
             const timestamp = date.stampToTime(pool.createTime, 2);
 
-            poolId = '999';
             // 2. create pool info
             await isPoolExist(poolId, (error, data) => {
                 // console.log('isPoolExist error=%s, data=%s', error, JSON.stringify(data));
