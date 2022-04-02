@@ -140,5 +140,12 @@
         "jsonSnapshotFilename": "_current-fuji-bmock.json",
         "fleekNamespace": "balancer-claims-fuji-bmock",
         "offset": 0
+    },
+    "avalanche": {
+        "reportsDirectory": "../reports/",
+        "reportFilename": "avalanche_totals.json",
+        "jsonSnapshotFilename": "_current-avalanche.json",
+        "fleekNamespace": "balancer-claims-avalanche",
+        "offset": 0
     }
 }

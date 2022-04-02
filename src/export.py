@@ -57,9 +57,18 @@ class CreateReports:  # create reports
             json.dump(parsed_export, write_file, indent=4)
         LOGGER.debug(f'saved to {filename}')
 
-        # If it is the main chain, write fuji_totals JSON file
+        # If it is the fuji chain, write fuji_totals JSON file
         if self.__chain_id == 43113 and self.__token == '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc':
             filename = f'{reports_dir}/fuji_totals.json'
+            with open(filename, "w") as write_file:
+                json.dump(parsed_export, write_file, indent=4)
+            # print success log
+            LOGGER.debug(f'saved to {filename} success!')
+        
+         # todo add Avalanche Mainnet support
+         # If it is the Avalanche mainnet chain, write avalanche_totals JSON file
+        if self.__chain_id == 43114 and self.__token == 'todo official token address here':
+            filename = f'{reports_dir}/avalanche_totals.json'
             with open(filename, "w") as write_file:
                 json.dump(parsed_export, write_file, indent=4)
             # print success log
