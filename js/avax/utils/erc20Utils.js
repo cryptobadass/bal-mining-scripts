@@ -1,6 +1,8 @@
 const Web3 = require('web3');
 const { ENDPOINT } = require('./constants');
-const web3 = new Web3(new Web3.providers.WebsocketProvider(ENDPOINT.FUJI));
+const network = process.env.NETWORK;
+const rprUrl = network === 'fuji' ? ENDPOINT.FUJI : ENDPOINT.AVALANCHE;
+const web3 = new Web3(new Web3.providers.HttpProvider(rprUrl));
 // abi of ERC20
 const erc20Abi = require('../../../abi/ERC20.json');
 

@@ -1,11 +1,12 @@
 import os
 
-# NEWWORDS Config
+# NETWORDS Config
 NETWORKS = {
     # 1: 'ethereum',
     # 137: 'polygon',
     # 42161: 'arbitrum',
-    43113: 'fuji'
+    43113: 'fuji',
+    43114: 'avalanche'
 }
 
 # leave out of results addresses that mined less than CLAIM_THRESHOLD

@@ -8,9 +8,11 @@ async function createPoolInfo(
     factory,
     timestamp
 ) {
+    let chainId =
+        process.env.NETWORK === 'fuji' ? CHAIN_ID.FUJI : CHAIN_ID.AVALANCHE;
     PoolInfo.create(
         new PoolInfo({
-            chain_id: CHAIN_ID.FUJI,
+            chain_id: chainId,
             pool_id: poolId,
             pool_address: poolAddress,
             pool_type: poolType,

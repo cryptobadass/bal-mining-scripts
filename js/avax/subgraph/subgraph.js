@@ -1,12 +1,32 @@
 const fetch = require('isomorphic-fetch');
 const { ENDPOINT, SUBGRAPH_URL } = require('../utils/constants');
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.WebsocketProvider(ENDPOINT.FUJI));
+const network = process.env.NETWORK;
+let web3;
 
 async function fetchAllPools() {
     let poolResults = [];
     let skip = 0;
     let paginatePools = true;
+    let subgraphUrl;
+    console.log('fetchAllPools network=%s', network);
+    if (network === 'fuji') {
+        web3 = new Web3(new Web3.providers.HttpProvider(ENDPOINT.FUJI));
+        subgraphUrl = SUBGRAPH_URL.FUJI;
+        console.log(
+            'fetchAllPools fuji=%s, subgraphUrl=%s',
+            ENDPOINT.FUJI,
+            subgraphUrl
+        );
+    } else if (network === 'avalanche') {
+        subgraphUrl = SUBGRAPH_URL.AVALANCHE;
+        web3 = new Web3(new Web3.providers.HttpProvider(ENDPOINT.AVALANCHE));
+        console.log(
+            'fetchAllPools avalanche=%s, subgraphUrl=%s',
+            ENDPOINT.AVALANCHE,
+            subgraphUrl
+        );
+    }
     // to fetch all pools
     while (paginatePools) {
         let query = `
@@ -27,7 +47,7 @@ async function fetchAllPools() {
         }
       `;
 
-        let response = await fetch(SUBGRAPH_URL.FUJI, {
+        let response = await fetch(subgraphUrl, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -76,7 +96,7 @@ async function fetchAllPools() {
                     }
                 `;
 
-                let response = await fetch(SUBGRAPH_URL.FUJI, {
+                let response = await fetch(subgraphUrl, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',

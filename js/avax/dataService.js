@@ -13,7 +13,7 @@ const {
     findIdsByTime,
 } = require('./balanceSnapshotService');
 const moment = require('moment');
-const fujiSubgraph = require('./subgraph/fujiSubgraph');
+const subgraph = require('./subgraph/subgraph');
 const date = require('./utils/date');
 const { ZERO_ADDRESS } = require('./utils/constants');
 const erc20Utils = require('./utils/erc20Utils');
@@ -26,7 +26,7 @@ const { EMAIL_MSG } = require('./email/email.msg');
 async function initBasicData() {
     try {
         // 1. get all pools
-        let allPools = await fujiSubgraph.fetchAllPools();
+        let allPools = await subgraph.fetchAllPools();
         for (let pool of allPools) {
             const poolId = pool.id;
             const poolAddress = pool.address;
