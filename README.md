@@ -2,13 +2,11 @@
 
 Set of scripts to calculate weekly BAL liquidity mining distributions.
 
-On week 26, the process was ported over to Python with the [blockchain-etl](https://github.com/blockchain-etl/) project on Google Bigquery as the source for state data, such as pools' balances, fees, liquidity providers etc. The legacy scripts used up to week 25 can be found in the `js` directory.
-
 ## [Historical Runs](https://github.com/balancer-labs/bal-mining-scripts/blob/aca467d/README.md#historical-runs)
 
 ## [Reports](https://github.com/balancer-labs/bal-mining-scripts/tree/master/reports)
 
-Starting on week 57 of the liquidity mining program (June 28th 2021), pools can be incentivized with multiple tokens. Each weekly report directory has the following structure:
+pools can be incentivized with multiple tokens. Each weekly report directory has the following structure:
 
 -   `__<network>_<token>.json` files, containing a list of liquidity providers and the amount of `<token>` earned by each for providing liquidity in incentivized Balancer pools on `<network>`
 -   `_totalsLiquidityMining.json`: for consistency with the reports provided in previous weeks, contains a list of liquidity providers and `BAL` earned across all networks
@@ -18,13 +16,10 @@ Starting on week 57 of the liquidity mining program (June 28th 2021), pools can 
 ## Requirements
 
 -   Python 3
--   A [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) with read access to Google BigQuery
 
 ## Setup
 
 -   Install required packages: `pip install -r requirements.txt`
--   Configure environment variable:
-    -   `GOOGLE_APPLICATION_CREDENTIALS`: path to a JSON file that contains a service account key with read access to Google BigQuery
 
 ## Usage
 
