@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '../../../.env' });
+const dot = require('dotenv').config({ path: '../../../.env' });
+console.log('dot=%s', JSON.stringify(dot));
 
 module.exports = {
     mail: {
