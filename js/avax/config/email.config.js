@@ -1,5 +1,4 @@
-const dot = require('dotenv').config({ path: '../../../.env' });
-console.log('dot=%s', JSON.stringify(dot));
+require('dotenv').config({ path: '../../../.env' });
 
 module.exports = {
     mail: {
@@ -8,10 +7,10 @@ module.exports = {
             secureConnection: false, // TLS requires secureConnection to be false
             port: 587, // port for secure SMTP
             auth: {
-                user: process.env.EMAIL_USER, // please use outlook, high delivery success rate
-                pass: process.env.EMAIL_PASS,
+                user: 'aiguoli2021@outlook.com', // please use outlook, high delivery success rate
+                pass: 'Dewyze0612',
             },
         },
-        to: [process.env.EMAIL_RECEIVER],
+        to: ['aiguoli0612@gmail.com'],
     },
 };
