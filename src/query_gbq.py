@@ -3,8 +3,6 @@ import pandas as pd
 import pymysql
 from utils.mysql import get_mysql_connect
 from config.const.constants import *
-import os
-
 from utils.realtime_utils import *
 
 

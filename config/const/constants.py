@@ -5,8 +5,14 @@ NETWORKS = {
     # 1: 'ethereum',
     # 137: 'polygon',
     # 42161: 'arbitrum',
-    43113: 'fuji',
-    43114: 'avalanche'
+    43113: {
+        'network': 'fuji',
+        'token': '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc'
+    },
+    # 43114: {
+    #     'network': 'avalanche',
+    #     'token': 'todo official token address here'
+    # }
 }
 
 # leave out of results addresses that mined less than CLAIM_THRESHOLD
@@ -29,7 +35,3 @@ V2_LM_ALLOCATION_URL = 'https://raw.githubusercontent.com/cryptobadass/frontend-
 
 # Set Frist Week Beign Timestamp  2022-03-07
 WEEK_1_START_TIMESTAMP = 1646611200
-
-
-# Google Cloud Project ID
-PROJECT_ID = os.environ['GCP_PROJECT']

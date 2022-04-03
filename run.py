@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 
 from src.export import CreateReports
 from config.const.constants import *
-from src.update_api_dataset import update_gbq_api_dataset
 import pandas as pd
 from web3 import Web3
 
@@ -69,9 +68,7 @@ for chain_id in NETWORKS.keys():
         results_df['chain_id'] = chain_id
         full_export = full_export.append(results_df)
 
-if realtime_estimator:
-    update_gbq_api_dataset(full_export, week_number)
-else:
+if not realtime_estimator:
     reports_dir = f'reports/{week_number}'
     print('\nReports totals:')
     checks = {}

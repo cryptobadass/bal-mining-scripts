@@ -29,7 +29,7 @@ class CreateReports:  # create reports
 
     def save_fuji_report(self):
         LOGGER.debug(f'saving {self.__token} report...')
-        network = NETWORKS[self.__chain_id]
+        network = NETWORKS[self.__chain_id]['network']
         reports_dir = f'reports/{self.__week_number}'
 
         if not os.path.exists(reports_dir):
@@ -58,16 +58,16 @@ class CreateReports:  # create reports
         LOGGER.debug(f'saved to {filename}')
 
         # If it is the fuji chain, write fuji_totals JSON file
-        if self.__chain_id == 43113 and self.__token == '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc':
+        if self.__chain_id == 43113 and self.__token == NETWORKS[self.__chain_id]['token']:
             filename = f'{reports_dir}/fuji_totals.json'
             with open(filename, "w") as write_file:
                 json.dump(parsed_export, write_file, indent=4)
             # print success log
             LOGGER.debug(f'saved to {filename} success!')
-        
+
          # todo add Avalanche Mainnet support
          # If it is the Avalanche mainnet chain, write avalanche_totals JSON file
-        if self.__chain_id == 43114 and self.__token == 'todo official token address here':
+        if self.__chain_id == 43114 and self.__token == NETWORKS[self.__chain_id]['token']:
             filename = f'{reports_dir}/avalanche_totals.json'
             with open(filename, "w") as write_file:
                 json.dump(parsed_export, write_file, indent=4)
