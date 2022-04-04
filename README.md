@@ -1,69 +1,164 @@
-<h1 align=center><code>BAL Mining</code></h1>
+# Balancer Mining Scripts
 
 Set of scripts to calculate weekly BAL liquidity mining distributions.
 
-## [Historical Runs](https://github.com/balancer-labs/bal-mining-scripts/blob/aca467d/README.md#historical-runs)
-
-## [Reports](https://github.com/balancer-labs/bal-mining-scripts/tree/master/reports)
-
-pools can be incentivized with multiple tokens. Each weekly report directory has the following structure:
-
--   `__<network>_<token>.json` files, containing a list of liquidity providers and the amount of `<token>` earned by each for providing liquidity in incentivized Balancer pools on `<network>`
--   `_totalsLiquidityMining.json`: for consistency with the reports provided in previous weeks, contains a list of liquidity providers and `BAL` earned across all networks
--   `_gasResimbursement.json`: results of the _BAL for Gas_ program for the week, if applicable
--   `_totals.json`: total amount of `BAL` to be claimed on Ethereum mainnet (`__ethereum_0xba1...` + `_gasResimbursement.json`)
+###### tags: `Balancer`
 
 ## Requirements
 
 -   Python 3
+-   Mysql8
 
-## Setup
+## 1. Database
 
--   Install required packages: `pip install -r requirements.txt`
+```sql=
+// 1. pull mysql image
+docker pull mysql:latest
 
-## Usage
+// 2. run mysql container, username: root  password: your password here
+docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=your-password-here mysql
 
-`python3 run.py`
+// 3. enter container
+docker exec -it mysql bash
 
-## Weekly distributions
+// 4. login mysql, enter password: your-password-here
+mysql -u root -p
 
-145,000 BAL will be distributed on a weekly basis.  
-Liquidity providers must claim their BAL at [app.balancer.fi](https://app.balancer.fi/), [polygon.balancer.fi](https://polygon.balancer.fi/) or [arbitrum.balancer.fi](https://arbitrum.balancer.fi/).
+// 5. create database
+create database balancer_db charset=utf8;
 
-## Redirections
+// 6. use database
+use balancer_db;
 
-In case smart contracts which cannot receive tokens are liquidity providers (ie. hold the tokens that represent ownership of the pool), owners of those smart contracts can choose to redirect their liquidity mining incentives to a new address. In order to submit a redirection request, submit a pull request to update `config/redirect.json` using `"fromAddress" : "toAddress"` along with some sort of ownership proof. Please reach out to the Balancer team if you need assistance.
+/// 7. create tables
+ CREATE TABLE `pool_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `chain_id` int DEFAULT '0' COMMENT 'blockchian id',
+  `pool_id` varchar(255) DEFAULT '' COMMENT 'pool id',
+  `pool_address` varchar(255) DEFAULT '' COMMENT 'pool address',
+  `pool_type` varchar(255) DEFAULT '' COMMENT 'pool type',
+  `factory` varchar(255) DEFAULT '' COMMENT 'pool factory address',
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'time stamp',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_pool_address` (`pool_address`) USING BTREE COMMENT 'unique pool address'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Pool info table';
 
-## Opting out
+CREATE TABLE `pool_user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pool_address` varchar(255) DEFAULT '' COMMENT 'pool address',
+  `address` varchar(255) DEFAULT '' COMMENT 'user address',
+  `timestamp` datetime DEFAULT NULL COMMENT 'time stamp',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_poolAddress_userAddress` (`pool_address`,`address`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Pool user table';
 
-Liquidity providers can choose to opt out of liquidity mining incentives. In order to do so, they must submit a pull request as per the instructions below along with some sort of proof of ownership of the address. Please reach out to the Balancer team if you need assistance.
+CREATE TABLE `balance_snapshot` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pool_address` varchar(255) DEFAULT '' COMMENT 'pool address',
+  `user_address` varchar(255) DEFAULT '' COMMENT 'user_address',
+  `user_balance` varchar(300) DEFAULT '0' COMMENT 'user balance',
+  `total_supply` varchar(300) DEFAULT '0' COMMENT 'total supply',
+  `decimals` int DEFAULT '18' COMMENT 'token decimals',
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'time stamp',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Pool balance snapshot';
 
-### Opting out of specific pools
-
-Add your address to the file `config/exclude.json`, which has the following structure;
-
+CREATE TABLE `every_week_need_reward_user_snapshot` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `chain_id` int DEFAULT '0' COMMENT 'blockchian id',
+  `pool_address` varchar(255) DEFAULT '' COMMENT 'pool address',
+  `token_address` varchar(255) DEFAULT '' COMMENT 'token address',
+  `user_address` varchar(255) DEFAULT '' COMMENT 'user address',
+  `current_estimate` varchar(300) DEFAULT '0' COMMENT 'current estimate',
+  `velocity` varchar(255) DEFAULT '0' COMMENT 'velocity',
+  `week` int DEFAULT '0' COMMENT 'week',
+  `snapshot_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'snapshot timestamp',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='every week need reward user snapshot';
 ```
-{
-  "chain_id": {
-    "pool_address": [
-      "liquidity_provider_a",
-      "liquidity_provider_b",
-      ...
-    ],
-    ...
-  },
-  ...
-}
+
+## 2. Config .env
+
+Copy .env.example file and rename it to .env. Then fill values in .env file.
+
+```javascript=
+FLEEK_API_KEY=your fleek api key here
+FLEEK_API_SECRET=your fleek api secret here
+FLEEK_BUCKET=your fleek bucket here
+# only fuji, avalanche
+NETWORK=fuji/avalanche here
+MYSQL_HOST=localhost
+MYSQL_USER=your mysql user
+MYSQL_PASSWORD=your mysql password
+MYSQL_DATABASE=your mysql database
+MYSQL_CHARSET=utf8
+EMAIL_USER=your email sender
+EMAIL_PASS=your email sender password
+# Multiple mail recipients can be separated by ,
+EMAIL_RECEIVER=
 ```
 
-### Opting out of liquidity mining altogether
+## 3. Run the project
 
-Add your address to `BASE_LP_EXCLUSION_LIST` in `src/query_gbq.py`
+### 3.1. Clone the code
 
+```bash=
+git clone this-project-code
 ```
-BASE_LP_EXCLUSION_LIST = [
-    '0x0000000000000000000000000000000000000000',
-    '0xba12222222228d8ba445958a75a0704d566bf2c8'.
-    '<insert_address_here>'
-]
+
+### 3.2. Install python packages
+
+```bash=
+pip3 install -r requirements.txt
+```
+
+### 3.3. Install nodejs packages
+
+```bash=
+yarn
+```
+
+### 3.4. Run auto-task
+
+Run task to get balance snapshot.
+
+```bash=
+yarn auto-task
+```
+
+### 3.5. Create reports
+
+Every Monday, 8:00 UTC.
+
+Before run the command, config MultiTokenLiquidityMining in frontend-v2 project. https://raw.githubusercontent.com/cryptobadass/frontend-v2/develop/src/lib/utils/liquidityMining/MultiTokenLiquidityMining.json.
+
+```bash=
+python3 run.py
+```
+
+### 3.6. Compute roots and publish ipfs
+
+Compute roots and publish ipfs after reports created.
+
+```bash=
+NETWORK=avalanche yarn merkle-roots --outfile ./reports/_roots-avalanche.json
+
+NETWORK=avalanche yarn ipfs-publish
+```
+
+## Attention
+
+### 1. Modify config/const/constants.py
+
+```python=
+modify NETWORKS, config token address
+
+43113: {
+        'network': 'fuji',
+        'token': '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc'
+    },
+43114: {
+        'network': 'avalanche',
+        'token': 'todo official token address here'
+    }
 ```

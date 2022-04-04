@@ -9,10 +9,10 @@ NETWORKS = {
         'network': 'fuji',
         'token': '0xE00Bf4d40670FCC1DcB3A757ebccBe579f372fbc'
     },
-    # 43114: {
-    #     'network': 'avalanche',
-    #     'token': 'todo official token address here'
-    # }
+    43114: {
+        'network': 'avalanche',
+        'token': 'todo official token address here'
+    }
 }
 
 # leave out of results addresses that mined less than CLAIM_THRESHOLD
