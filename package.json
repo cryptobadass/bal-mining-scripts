@@ -10,7 +10,7 @@
         "merkle-roots": "node js/lib/getMerkleRoots.js",
         "migrateChannel": "node js/lib/migrateChannel.js",
         "initPoolInfoAndUsers": "node js/avax/dataService.js",
-        "auto-task": "node js/avax/autoTask.js &"
+        "auto-task": "pm2 start js/avax/autoTask.js --name autoTask --watch"
     },
     "husky": {
         "hooks": {
