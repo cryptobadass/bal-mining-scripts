@@ -116,6 +116,8 @@ pip3 install -r requirements.txt
 
 ```bash=
 yarn
+
+npm install -g pm2
 ```
 
 ### 3.4. Run auto-task
