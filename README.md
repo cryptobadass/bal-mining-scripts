@@ -164,3 +164,9 @@ modify NETWORKS, config token address
         'token': 'todo official token address here'
     }
 ```
+
+### 2. Modify js/src/tokens.ts
+
+```
+BAL_TOKEN
+```
