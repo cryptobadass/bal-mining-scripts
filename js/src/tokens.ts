@@ -5,7 +5,9 @@ interface CapTiers {
 const capTiers: CapTiers = require('../lib/whitelist');
 import { BigNumber } from 'bignumber.js';
 const { bnum } = require('./utils');
-export const BAL_TOKEN = '0xba100000625a3754423978a60c9317c58a424e3D';
+// change to YoteiGovernanceToken address 0xBb57647DBB6E1f6DCa376039b94FCbf4d16D3bfE
+// export const BAL_TOKEN = '0xba100000625a3754423978a60c9317c58a424e3D';
+export const BAL_TOKEN = '0xBb57647DBB6E1f6DCa376039b94FCbf4d16D3bfE';
 
 export const uncappedTokens = Object.entries(capTiers)
     .filter(([address, capString]) => capString == 'uncapped')

@@ -11,7 +11,7 @@ NETWORKS = {
     },
     43114: {
         'network': 'avalanche',
-        'token': 'todo official token address here'
+        'token': '0xBb57647DBB6E1f6DCa376039b94FCbf4d16D3bfE'
     }
 }
 
